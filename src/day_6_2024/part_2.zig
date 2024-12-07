@@ -18,14 +18,14 @@ pub fn do() !void {
     const allocator = arena.allocator();
     defer arena.deinit();
 
-    var lines = try util.readLinesFromFile("./src/input/day_06_2024.txt", allocator);
+    const lines = try util.readLinesFromFile("./src/input/day_06_2024.txt", allocator);
 
     var field: [][]u8 = allocator.alloc([]u8, lines.items.len) catch |err| return err;
+
     for (0..lines.items.len) |index| {
         field[index] = try allocator.alloc(u8, lines.items[index].len);
         std.mem.copyForwards(u8, field[index], lines.items[index]);
     }
-    //var field = try lines.toOwnedSlice();
 
     var pos: Pos = undefined;
     var visited: std.ArrayList(Pos_w_dir) = std.ArrayList(Pos_w_dir).init(allocator);
