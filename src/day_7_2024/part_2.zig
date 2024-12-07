@@ -10,12 +10,8 @@ pub fn do() !void {
     defer lines.deinit();
 
     var sum: u64 = 0;
-    var l: u32 = 0;
 
     for (lines.items) |line| { 
-        std.debug.print("{}\n", .{l});
-        l += 1;
-
         const parts = try util.split(line, ": ", allocator);
         
         const test_result = try std.fmt.parseInt(u64,  parts.items[0], 10);
@@ -29,9 +25,9 @@ pub fn do() !void {
         for (1..eq_parts.items.len) |eq_part_index| {
             var new_pos_results = std.ArrayList(u64).init(allocator);
             for (pos_results.items) |value| {
-                try push_if_not_exists(&new_pos_results, value * eq_parts.items[eq_part_index]);
-                try push_if_not_exists(&new_pos_results, value + eq_parts.items[eq_part_index]);
-                try push_if_not_exists(&new_pos_results, try combine(value, eq_parts.items[eq_part_index], allocator));
+                try new_pos_results.append(value * eq_parts.items[eq_part_index]);
+                try new_pos_results.append(value + eq_parts.items[eq_part_index]);
+                try new_pos_results.append(concat(value, eq_parts.items[eq_part_index]));
             }
             pos_results = new_pos_results;
         }
@@ -47,18 +43,8 @@ pub fn do() !void {
     std.debug.print("Sum: {}", .{sum});
 }
 
-fn push_if_not_exists(list: *std.ArrayList(u64), item: u64) !void {
-    for (list.items) |value| { 
-        if(value == item) { 
-            return;            
-        }
-    }
-    try list.append(item);
-}
-
-fn combine(left: u64, right: u64, allocator: std.mem.Allocator) !u64 {
-    const combined_string = try std.fmt.allocPrint(allocator, "{}{}", .{left, right});
-    const result = try std.fmt.parseInt(u64, combined_string, 10);
-    allocator.free(combined_string);
-    return result;
+//copied from zig-discord message from https://github.com/aw1875
+fn concat(a: u64, b: u64) u64 {
+    const digits = if (b == 0) 1 else @floor(@log10(@as(f64, @floatFromInt(b)))) + 1;
+    return a * std.math.pow(usize, 10, @intFromFloat(digits)) + b;
 }
