@@ -12,6 +12,7 @@ pub fn readLinesFromFile(file_path: []const u8, allocator: std.mem.Allocator) !s
         const trimmed_line = std.mem.trim(u8, line, " \t\r\n");
         try lines.append(trimmed_line);
         //allocator.free(line);
+        //try lines.append(line);
     }
 
     return lines;

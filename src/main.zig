@@ -19,6 +19,9 @@ const d6_part_2_2024 = @import("./day_6_2024/part_2.zig");
 const d7_part_1_2024 =  @import("./day_7_2024/part_1.zig");
 const d7_part_2_2024 =  @import("./day_7_2024/part_2.zig");
 
+const d8_part_1_2024 =  @import("./day_8_2024/part_1.zig");
+const d8_part_2_2024 =  @import("./day_8_2024/part_2.zig");
+
 const util = @import("./utils/utils.zig");
 const std = @import("std");
 
@@ -42,5 +45,8 @@ pub fn main() !void {
     //try d6_part_2_2024.do();
 
     //try d7_part_1_2024.do();
-    try d7_part_2_2024.do();
+    //try d7_part_2_2024.do();
+
+    //try d8_part_1_2024.do();
+    try d8_part_2_2024.do();
 }
